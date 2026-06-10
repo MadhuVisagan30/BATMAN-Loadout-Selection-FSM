@@ -141,8 +141,8 @@ BATMAN_LOADOUT_FSM
 │   └── state_diagram.jpeg
 │
 ├── SIMULATION
-│   ├── state_diagram.jpeg
 │   └── waveform.png
+│   
 │
 └── README.md
 ```
