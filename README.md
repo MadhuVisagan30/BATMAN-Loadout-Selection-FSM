@@ -1,78 +1,193 @@
-# Shift Registers in Verilog HDL
+# Batman Loadout Selection FSM using Verilog HDL
 
-## Project Overview
+## Overview
 
-This repository contains Verilog HDL implementations of fundamental shift register architectures along with their corresponding testbenches and simulation results. The designs were developed and verified using Xilinx Vivado.
+This project implements a custom Finite State Machine (FSM) in Verilog HDL that simulates Batman selecting a mission loadout. The user can navigate through available vehicles and weapons using control inputs and confirm the final loadout selection.
 
-## Implemented Designs
+The design demonstrates FSM concepts including state encoding, state transitions, output decoding, and storage of selected options.
 
-### 1. Serial-In Serial-Out (SISO)
-- Accepts serial data input.
-- Produces serial data output.
-- Implemented using cascaded D Flip-Flops.
+---
 
-### 2. Serial-In Parallel-Out (SIPO)
-- Accepts serial data input.
-- Produces parallel data output.
-- Used for serial-to-parallel data conversion.
+## Features
 
-### 3. Parallel-In Serial-Out (PISO)
-- Loads data in parallel.
-- Shifts data out serially.
-- Used for parallel-to-serial data conversion.
+- Moore FSM architecture
+- 7-state custom state machine
+- Vehicle selection system
+- Weapon selection system
+- Loadout confirmation state
+- Stores selected vehicle and weapon
+- Verilog RTL implementation
+- Functional simulation and waveform verification
 
-### 4. Parallel-In Parallel-Out (PIPO)
-- Loads data in parallel.
-- Produces data in parallel.
-- Functions as a basic register.
+---
 
-## Files Included
+## State Encoding
 
-| File | Description |
-|--------|------------|
-| SISO.v | Serial-In Serial-Out Shift Register |
-| SIPO.v | Serial-In Parallel-Out Shift Register |
-| PISO.v | Parallel-In Serial-Out Shift Register |
-| PIPO.v | Parallel-In Parallel-Out Shift Register |
-| tb_SISO.v | Testbench for SISO |
-| tb_SIPO.v | Testbench for SIPO |
-| tb_PISO.v | Testbench for PISO |
-| tb_PIPO.v | Testbench for PIPO |
+| State | Encoding |
+|---------|---------|
+| IDLE | 000 |
+| BAT_MOBILE | 001 |
+| BAT_WING | 010 |
+| BAT_BOAT | 011 |
+| BATARANG | 100 |
+| SMOKE_BOMB | 101 |
+| CONFIRM | 110 |
+
+---
+
+## Inputs
+
+| Signal | Description |
+|----------|-------------|
+| clk | System Clock |
+| reset | Asynchronous Reset |
+| next | Navigate through available options |
+| select | Select current option |
+
+---
+
+## Outputs
+
+| Signal | Description |
+|----------|-------------|
+| idle | Indicates IDLE state |
+| bat_mobile | Indicates BAT_MOBILE state |
+| bat_wing | Indicates BAT_WING state |
+| bat_boat | Indicates BAT_BOAT state |
+| batarang | Indicates BATARANG state |
+| smoke_bomb | Indicates SMOKE_BOMB state |
+| loadout_ready | Indicates CONFIRM state |
+| vehicle_selected | Stores selected vehicle |
+| weapon_selected | Stores selected weapon |
+| state_out | Current FSM state |
+
+---
+
+## Vehicle Selection
+
+| Vehicle | Stored Value |
+|----------|-------------|
+| BAT_MOBILE | 01 |
+| BAT_WING | 10 |
+| BAT_BOAT | 11 |
+
+---
+
+## Weapon Selection
+
+| Weapon | Stored Value |
+|---------|-------------|
+| BATARANG | 0 |
+| SMOKE_BOMB | 1 |
+
+---
+
+## Example Selection Flow
+
+```text
+IDLE
+  ↓
+BAT_MOBILE
+  ↓ NEXT
+BAT_WING
+  ↓ SELECT
+BATARANG
+  ↓ NEXT
+SMOKE_BOMB
+  ↓ SELECT
+CONFIRM
+```
+
+Final Loadout:
+
+```text
+Vehicle : BAT_WING
+Weapon  : SMOKE_BOMB
+Status  : LOADOUT READY
+```
+
+---
+
+## Design Methodology
+
+The FSM is implemented using the standard three-block FSM architecture:
+
+### 1. State Register
+
+Updates the current state on every clock edge and handles asynchronous reset.
+
+### 2. Next-State Logic
+
+Determines the next state based on the current state and user inputs (`next` and `select`).
+
+### 3. Output Logic
+
+Generates outputs corresponding to each state and stores the selected vehicle and weapon.
+
+---
+
+## Project Structure
+
+```text
+BATMAN_LOADOUT_FSM
+│
+├── RTL DESIGN
+│   └── BATMAN_LOADOUT.v
+│
+├── TESTBENCH
+│   └── tb_batman_loadout.v
+│
+├── STATE DIAGRAM
+│   └── state_diagram.jpeg
+│
+├── SIMULATION
+│   ├── state_diagram.jpeg
+│   └── waveform.png
+│
+└── README.md
+```
+
+---
 
 ## Simulation Results
 
-Behavioral simulations were performed in Xilinx Vivado to verify the functionality of each shift register design. Waveform screenshots are included in the repository.
+The FSM was verified using a dedicated Verilog testbench.
 
-## Tools Used
+Simulation successfully demonstrates:
 
-- Verilog HDL
-- Xilinx Vivado
-- Behavioral Simulation
+- Vehicle navigation
+- Vehicle selection
+- Weapon navigation
+- Weapon selection
+- Confirmation of final loadout
+- Storage of selected vehicle and weapon
+
+
+```text
+SIMULATION/waveform.png
+```
+
+---
 
 ## Learning Outcomes
 
-Through this project, the following concepts were explored:
+Through this project, the following concepts were practiced:
 
-- D Flip-Flop Design
+- Finite State Machines (FSMs)
+- State Encoding
+- Moore Machine Design
+- Next-State Logic
 - Sequential Logic Design
-- Shift Register Architectures
-- Parallel and Serial Data Transfer
+- Combinational Logic Design
+- Verilog HDL Coding
 - Testbench Development
-- Functional Verification using Simulation
+- Functional Verification
+- Simulation Analysis
 
-- ## Simulation Results
-
-### SISO
-![SISO](SISO/SISO_waveform.png)
-
-### SIPO
-![SIPO](SIPO/SIPO_waveform.png)
-
-### PISO
-![PISO](PISO/PISO_waveform.png)
-
-### PIPO
-![PIPO](PIPO/PIPO_waveform.png)
+---
 
 ## Author
+
 Madhu Visagan H T
+
+Digital VLSI | RTL Design | Verilog HDL
